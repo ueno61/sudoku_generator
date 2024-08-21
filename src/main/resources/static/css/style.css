@@ -1,0 +1,12 @@
+table {
+    /* 線が二重にならない */
+    border-collapse: collapse;
+
+    /* 一番外側の枠線　solid:実線　*/
+    border: 4px solid rgb(0 0 0);
+}
+
+td {
+  border: 1px solid rgb(0 0 0);
+}
+ 

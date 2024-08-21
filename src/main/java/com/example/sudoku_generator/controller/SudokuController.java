@@ -11,5 +11,10 @@ public class SudokuController {
     public String getIndex() {
         return "index";
     }
-    
+   
+    //問題ページ
+    @GetMapping("/problem")
+    public String getProblem() {
+        return "Problem";
+    }
 }

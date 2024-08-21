@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<body>
 
+<head>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+    <h2>Suudoku Generator</h2>
+    <h3>Difficulty : --- </h3>
+    <table> 
+        <th:block th:each="i : ${#numbers.sequence(0,8)}">
+        <tr>
+            <td th:each="j : ${#numbers.sequence(0,8)}">b</td>
+        </tr>
+        </th:block>
+    </table>
 </body>
 </html>
