@@ -75,12 +75,34 @@ function clickCellHandler(){
     }
 }
 
+//セルの表示を数字とメモで切り替える
+//参考: https://qiita.com/Gakusyu/items/0aa06abb12d3fb3d53a6
+
+function changeToNum(table, i, j) {
+    let numdiv = table.rows[i].cells[j].children[0];
+    let memodiv = table.rows[i].cells[j].children[1]; 
+
+    numdiv.classList.add('active'); 
+    memodiv.classList.remove('active'); 
+}
+
+function changeToMemo(table, i, j) {
+    let numdiv = table.rows[i].cells[j].children[0];
+    let memodiv = table.rows[i].cells[j].children[1]; 
+
+    numdiv.classList.remove('active'); 
+    memodiv.classList.add('active'); 
+}
+
+
 //数字ボタンが押された時の処理
 function numButtonHandler(){
     const table = this.table;
     const num = this.num;
     if(clickedCellCol != null && clickedCellRow != null){
-        table.rows[clickedCellCol].cells[clickedCellRow].innerText = num;
+        let numcell = table.rows[clickedCellCol].cells[clickedCellRow].children[0].children[0];
+        numcell.rows[0].cells[0].innerText = num;
+        changeToNum(table, clickedCellCol, clickedCellRow);
     }
 }
 
@@ -88,17 +110,37 @@ function numButtonHandler(){
 function delButtonHandler(){
     const table = this.table;
     if(clickedCellCol != null && clickedCellRow != null){
-        table.rows[clickedCellCol].cells[clickedCellRow].innerText = '';
+        let numcell = table.rows[clickedCellCol].cells[clickedCellRow].children[0].children[0];
+        numcell.rows[0].cells[0].innerText = '';
+        changeToMemo(table, clickedCellCol, clickedCellRow);
+    }
+}
+
+//MEMOボタンが押された時の処理
+//未完成!!
+function memoButtonHandler(){
+    const table = this.table;
+    if(clickedCellCol != null && clickedCellRow != null){
+        memotable = table.rows[clickedCellCol].cells[clickedCellRow].children[1].children[0];
+
+        for(let i = 0; i < 3; i++){
+            for(let j = 0; j < 3; j++){
+                memotable.rows[i].cells[j].innerText = i * 3 + j + 1;
+            }
+        }
+        changeToMemo(table, clickedCellCol, clickedCellRow);
     }
 }
 
 
 //フィールドの各要素にイベントハンドラを設定
+//TODO: memo実装に伴い、fieldの構造が変化。それに対応
 const table = document.getElementsByClassName('field').item(0);
 for(let i = 0; i < table.rows.length; i++){
     let cells = table.rows[i].cells;
     for(let j = 0; j < cells.length; j++){
         let cell = cells[j];
+
         //addEventlistenerのハンドラに引数を渡す
         cell.addEventListener('click', {table: table, i: i, j: j, handleEvent: clickCellHandler});
         cell.addEventListener('mouseleave', {table: table, i: i, j: j, handleEvent: cancelHighlightHandler});
@@ -115,5 +157,6 @@ for(let i = 0; i < 9; i++){
 const optionbuttons = document.getElementsByClassName('optionbutton');
 //MEMOボタン
 
+optionbuttons.item(0).addEventListener('click', {table: table, handleEvent: memoButtonHandler});
 //DELETEボタン
 optionbuttons.item(1).addEventListener('click', {table: table, handleEvent: delButtonHandler});
