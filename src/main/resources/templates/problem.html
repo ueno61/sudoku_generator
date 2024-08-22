@@ -2,24 +2,32 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
+    <title>Suudoku Generator</title>
     <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 
 <body>
-    <h3>Suudoku Generator</h3>
-    <h4>Difficulty : --- </h4>
+    <div class="vbox">
+        <h1>Suudoku Generator</h1>
+        <h3>Difficulty : --- </h3>
+    
+        <table> 
+            <th:block th:each="i : ${#numbers.sequence(0,8)}">
+            <tr>
+                <td th:each="j : ${#numbers.sequence(0,8)}">[[${i}]]</td>
+            </tr>
+            </th:block>
+        </table>
+        <div class="hbox1">
+            <button th:each="i : ${#numbers.sequence(1,9)}" type="button" class="numbutton">[[${i}]]</button>
+        </div>
+        <div class="hbox2">
+            <button type="button" class="optionbutton">MEMO</button>
+            <button type="button" class="optionbutton">DELETE</button>
+            <button type="button" class="submitbutton">SUBMIT</button>
+        </div>
+    </div>
 
-    <table> 
-        <th:block th:each="i : ${#numbers.sequence(0,8)}">
-        <tr>
-            <td th:each="j : ${#numbers.sequence(0,8)}">b</td>
-        </tr>
-        </th:block>
-    </table>
-
-    <input th:each="i : ${#numbers.sequence(1,9)}" type="button" th:value="${i}" />
-    <input type="button" value="MEMO" />
-    <input type="button" value="DELETE" />
 
 
 </body>
