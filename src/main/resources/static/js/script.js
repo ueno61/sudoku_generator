@@ -75,11 +75,20 @@ function clickCellHandler(){
     }
 }
 
+//数字ボタンが押された時の処理
 function numButtonHandler(){
     const table = this.table;
     const num = this.num;
     if(clickedCellCol != null && clickedCellRow != null){
         table.rows[clickedCellCol].cells[clickedCellRow].innerText = num;
+    }
+}
+
+//DELETEボタンが押された時の処理
+function delButtonHandler(){
+    const table = this.table;
+    if(clickedCellCol != null && clickedCellRow != null){
+        table.rows[clickedCellCol].cells[clickedCellRow].innerText = '';
     }
 }
 
@@ -102,3 +111,9 @@ const numbuttons = document.getElementsByClassName('numbutton');
 for(let i = 0; i < 9; i++){
     numbuttons.item(i).addEventListener('click', {table: table, num: i+1, handleEvent: numButtonHandler});
 }
+
+const optionbuttons = document.getElementsByClassName('optionbutton');
+//MEMOボタン
+
+//DELETEボタン
+optionbuttons.item(1).addEventListener('click', {table: table, handleEvent: delButtonHandler});
