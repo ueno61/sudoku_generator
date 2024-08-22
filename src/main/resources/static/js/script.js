@@ -53,7 +53,6 @@ function cancelHighlightHandler(){
     table.rows[i].cells[j].style.backgroundColor = newColor;
 
 }
-
 //セルをクリックしたときに色を変え、座標を記録
 function clickCellHandler(){
     const table = this.table;
@@ -76,16 +75,30 @@ function clickCellHandler(){
     }
 }
 
-
-//テーブルの各要素にイベントハンドラを設定
-const table = document.getElementsByClassName('field').item(0);
-    for(let i = 0; i < table.rows.length; i++){
-        let cells = table.rows[i].cells;
-        for(let j = 0; j < cells.length; j++){
-            let cell = cells[j];
-            //addEventlistenerのハンドラに引数を渡す
-            cell.addEventListener('click', {table: table, i: i, j: j, handleEvent: clickCellHandler});
-            cell.addEventListener('mouseleave', {table: table, i: i, j: j, handleEvent: cancelHighlightHandler});
-            cell.addEventListener('mouseover', {table: table, i: i, j: j, handleEvent: highlightLowColHandler});
-        }
+function numButtonHandler(){
+    const table = this.table;
+    const num = this.num;
+    if(clickedCellCol != null && clickedCellRow != null){
+        table.rows[clickedCellCol].cells[clickedCellRow].innerText = num;
     }
+}
+
+
+//フィールドの各要素にイベントハンドラを設定
+const table = document.getElementsByClassName('field').item(0);
+for(let i = 0; i < table.rows.length; i++){
+    let cells = table.rows[i].cells;
+    for(let j = 0; j < cells.length; j++){
+        let cell = cells[j];
+        //addEventlistenerのハンドラに引数を渡す
+        cell.addEventListener('click', {table: table, i: i, j: j, handleEvent: clickCellHandler});
+        cell.addEventListener('mouseleave', {table: table, i: i, j: j, handleEvent: cancelHighlightHandler});
+        cell.addEventListener('mouseover', {table: table, i: i, j: j, handleEvent: highlightLowColHandler});
+    }
+}
+
+//各操作用ボタンにイベントハンドラを設定
+const numbuttons = document.getElementsByClassName('numbutton');
+for(let i = 0; i < 9; i++){
+    numbuttons.item(i).addEventListener('click', {table: table, num: i+1, handleEvent: numButtonHandler});
+}

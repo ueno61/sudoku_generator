@@ -13,7 +13,7 @@
         <table class="field"> 
             <th:block th:each="i : ${#numbers.sequence(0,8)}">
             <tr>
-                <td th:each="j : ${#numbers.sequence(0,8)}">[[${i}]]</td>
+                <td th:each="j : ${#numbers.sequence(0,8)}"></td>
             </tr>
             </th:block>
         </table>
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-<!--　scriptタグは上の要素が読み込まれた後に読み込むために、一番最後にかく -->
+<!--　scriptタグは上の要素が読み込まれた後に読み込むために、一番最後に書く -->
 <script th:src="@{/js/script.js}"></script>
 </body>
 </html>
