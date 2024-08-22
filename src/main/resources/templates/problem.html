@@ -5,13 +5,12 @@
     <title>Suudoku Generator</title>
     <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
-
 <body>
     <div class="vbox">
         <h1>Suudoku Generator</h1>
         <h3>Difficulty : --- </h3>
     
-        <table> 
+        <table class="field"> 
             <th:block th:each="i : ${#numbers.sequence(0,8)}">
             <tr>
                 <td th:each="j : ${#numbers.sequence(0,8)}">[[${i}]]</td>
@@ -28,7 +27,6 @@
         </div>
     </div>
 
-
-
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

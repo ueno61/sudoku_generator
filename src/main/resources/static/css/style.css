@@ -10,7 +10,7 @@ h1, h3, table{
 
 }
 
-table {
+.field {
     /* 線が二重にならない */
     border-collapse: collapse;
 
