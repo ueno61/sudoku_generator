@@ -1,7 +1,7 @@
 package com.example.sudoku_generator.service;
-import com.example.sudoku_generator.service.field.Field;
+import com.example.sudoku_generator.service.board.Board;
 
 public class Generator {
     int difficult;
-    Field field;
+    Board board;
 }

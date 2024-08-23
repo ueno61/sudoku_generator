@@ -1,51 +1,18 @@
-package com.example.sudoku_generator.service.field;
+package com.example.sudoku_generator.service.board;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Field implements Cloneable{
+public class Board implements Cloneable{
     // たて、よこ、正方形で探索できるようにしたい
     // square,row,colを9つずつ持つようにする
     Unit[] squares,rows,cols;
 
-    public void initField(int[][] numbs){ // numbsは9*9の配列
-        squares = new Unit[9];
-        rows = new Unit[9];
-        cols = new Unit[9];
-        // 9個のsquare,row,colを初期化する
-        // まずはsquaresの初期化
-        for(int i=0;i<3;i++){
-            for(int j=0;j<3;j++) {
-                // i行j列のsquaresはnumbs[3*i][3*j]~numbs[3*i+2][3*j+2]を格納
-                int[] storeNumbs = new int[9];
-                for (int k=0;k<3;k++) {
-                    //noinspection ManualArrayCopy
-                    for(int l=0;l<3;l++){
-                        storeNumbs[3*k+l] = numbs[3*i+k][3*j+l];
-                    }
-                }
-                squares[3*i+j] = new Unit(storeNumbs);
-            }
-        }
-        // rowsの初期化
-        for(int i=0;i<9;i++){
-            // i行目のrowはnumbs[i][0],numbs[i][1],~,numbs[i][8]を格納
-            int[] storeNumbs = new int[9];
-            System.arraycopy(numbs[i], 0, storeNumbs, 0, 9);
-            rows[i] = new Unit(storeNumbs);
-        }
-        // colsの初期化
-        for(int i=0;i<9;i++){
-            // i行目のcolはnumbs[0][i],numbs[1][i],~,numbs[8][i]を格納
-            int[] storeNumbs = new int[9];
-            for(int k=0;k<9;k++){
-                storeNumbs[k] = numbs[k][i];
-            }
-            cols[i] = new Unit(storeNumbs);
-        }
+    public void initBoard(){
+        
     }
 
-    public boolean wholeFillEnd(){  // fieldの全てのセルでconfNumが0じゃないならtrueを返す
+    public boolean wholeFillEnd(){  // Boardの全てのセルでconfNumが0じゃないならtrueを返す
         boolean endFrag = true;
         for(Unit square:squares){
             if(!square.unitFillEnd()){ // どれか一つのsquareが埋まっていなかったらfalseを返す
@@ -76,7 +43,7 @@ public class Field implements Cloneable{
                     for(int colNum=0;colNum<3;colNum++){
                         // i番目のsquareに含まれる行は(i/3)*3から((i/3)*3+2)まで
                         // i番目のsquareに含まれる行は(i%3)*3から((i%3)*3+2)まで
-                        if(squares[i].unit[3*rowNum+colNum].getCell(cand)){
+                        if(squares[i].cells[3*rowNum+colNum].getCell(cand)){
                             if(!rowList.contains((i/3)*3+rowNum)){
                                 rowList.add((i/3)*3+rowNum);
                             }
@@ -157,7 +124,7 @@ public class Field implements Cloneable{
         }
     } */
 
-    public void setField(){
+    public void setBoard(){
         for(Unit square:squares){
             for(Cell cell:square){
                 cell.setConfNum();
@@ -193,9 +160,9 @@ public class Field implements Cloneable{
     }*/
 
     @Override
-    public Field clone() {
+    public Board clone() {
         try {
-            Field clone = (Field) super.clone();
+            Board clone = (Board) super.clone();
             clone.squares = this.squares.clone();
             for(int i=0;i<9;i++){
                 clone.squares[i] = this.squares[i].clone();
@@ -214,11 +181,11 @@ public class Field implements Cloneable{
         }
     }
 
-    public boolean myEquals(Field otherField) {
+    public boolean myEquals(Board otherBoard) {
         boolean sameSqr = true;
-        if(otherField.squares!=null) {
+        if(otherBoard.squares!=null) {
             for (int i = 0; i < 9; i++) {
-                if (!this.squares[i].myEquals(otherField.squares[i])) {
+                if (!this.squares[i].myEquals(otherBoard.squares[i])) {
                     sameSqr = false;
                     break;
                 }
