@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <title>Suudoku Generator</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="vbox">
+        <h1>Suudoku Generator</h1>
+        <h3>Difficulty : [[${diff}]]</h3>
+    
+        <table class="field"> 
+            <th:block th:each="i : ${#numbers.sequence(0,8)}">
+                <tr class="cell">
+                    <!-- 一つのセルに対応 -->
+                    <td class="cell" th:each="j : ${#numbers.sequence(0,8)}">
+                        <!-- 実際の数字 -->
+                        <th:block th:if="${field[i][j]==0}">
+                            <div class="num active">
+                                <table class="numtable"> 
+                                    <tr>
+                                        <td class="numcell">
+                                            [[${field[i][j]==0} ? '' :  ${field[i][j]}]]
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </th:block>
+
+                        <th:block th:unless="${field[i][j]==0}">
+                            <div class="num active fixed">
+                                <table class="numtable"> 
+                                    <tr>
+                                        <td class="numcell">
+                                            [[${field[i][j]==0} ? '' :  ${field[i][j]}]]
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </th:block> 
+
+                        <!-- メモ用テーブル -->
+                        <div class="memo">
+                            <table class="memotable"> 
+                                <th:block th:each="k1 : ${#numbers.sequence(0,2)}">
+                                    <tr>
+                                        <td th:each="k2 : ${#numbers.sequence(0,2)}" class="memocell">
+                                    </tr>
+                                </th:block>
+                            </table>
+                       </div>
+                    </td>
+
+                </tr>
+            </th:block>
+        </table>
+        <div class="hbox1">
+            <button th:each="i : ${#numbers.sequence(1,9)}" type="button" class="numbutton">[[${i}]]</button>
+        </div>
+        <div class="hbox2">
+            <button type="button" class="optionbutton">MEMO</button>
+            <button type="button" class="optionbutton">DELETE</button>
+            <button type="button" class="submitbutton">SUBMIT</button>
+        </div>
+    </div>
+
+<!--　scriptタグは上の要素が読み込まれた後に読み込むために、一番最後に書く -->
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
