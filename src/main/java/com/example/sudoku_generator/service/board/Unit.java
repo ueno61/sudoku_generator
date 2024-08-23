@@ -20,7 +20,7 @@ class Unit implements Iterable<Cell>, Cloneable{
     protected boolean unitFillEnd(){ // cellsの全てのcellでconfNumが0でないならばtrueを返す
         boolean endFrag = true;
         for(Cell cell:cells){
-            if(cell.getConfNum()==0){
+            if(cell.getConfirmedNumber()==0){
                 endFrag = false;
                 break;
             }
@@ -30,9 +30,9 @@ class Unit implements Iterable<Cell>, Cloneable{
 
     protected void excludeConfFromCand(){ // そのcellsのcellで入る可能性のない数をfalseにする
         for(Cell cell:cells){
-            int confNum = cell.getConfNum();
+            int confNum = cell.getConfirmedNumber();
             for(Cell otherCell:cells){
-                if(confNum!=otherCell.getConfNum()){
+                if(confNum!=otherCell.getConfirmedNumber()){
                     otherCell.setCell(confNum,false);
                 }
             }
@@ -40,7 +40,7 @@ class Unit implements Iterable<Cell>, Cloneable{
         // 二つのセルについて、同じ二つの数のみを候補とする場合、それらのセル以外のセルに入る数の候補からその二つの数を外す
         for(Cell firstCell:cells){
             for(Cell secondCell:cells){
-                if((firstCell!=secondCell)&&(firstCell.myEquals(secondCell))&&(firstCell.getNumOfCand()==2)){
+                if((firstCell!=secondCell)&&(firstCell.myEquals(secondCell))&&(firstCell.getSumOfCandidates()==2)){
                     for(Cell otherCell:cells){
                         if(!otherCell.myEquals(firstCell)){
                             for(int k=1;k<=9;k++){ // firstCellとsecondCell以外のセルについてfirstCellの候補の数を候補から外す
@@ -61,18 +61,18 @@ class Unit implements Iterable<Cell>, Cloneable{
                     // (i,j,k)を候補とする場合はセルの候補の数は3つ、(i,j),(i,k),(j,k)を候補とする場合はセルの候補の数は2つでないといけないため、場合分け
                     for(Cell firstCell:cells){
                         boolean firstNumOfCandEqual3,firstNumOfCandEqual2;
-                        firstNumOfCandEqual3 = firstCell.getCell(i) && firstCell.getCell(j) && firstCell.getCell(k) && (firstCell.getNumOfCand() == 3);
-                        firstNumOfCandEqual2 = ((firstCell.getCell(i) && firstCell.getCell(j)) || (firstCell.getCell(j) && firstCell.getCell(k)) || (firstCell.getCell(i) && firstCell.getCell(k))) && (firstCell.getNumOfCand() == 2);
+                        firstNumOfCandEqual3 = firstCell.getCell(i) && firstCell.getCell(j) && firstCell.getCell(k) && (firstCell.getSumOfCandidates() == 3);
+                        firstNumOfCandEqual2 = ((firstCell.getCell(i) && firstCell.getCell(j)) || (firstCell.getCell(j) && firstCell.getCell(k)) || (firstCell.getCell(i) && firstCell.getCell(k))) && (firstCell.getSumOfCandidates() == 2);
                         if(firstNumOfCandEqual3 || firstNumOfCandEqual2){
                             for(Cell secondCell:cells){
                                 boolean secondNumOfCandEqual3,secondNumOfCandEqual2;
-                                secondNumOfCandEqual3 = secondCell.getCell(i) && secondCell.getCell(j) && secondCell.getCell(k) && (secondCell.getNumOfCand() == 3);
-                                secondNumOfCandEqual2 = ((secondCell.getCell(i) && secondCell.getCell(j)) || (secondCell.getCell(j) && secondCell.getCell(k)) || (secondCell.getCell(i) && secondCell.getCell(k))) && (secondCell.getNumOfCand() == 2);
+                                secondNumOfCandEqual3 = secondCell.getCell(i) && secondCell.getCell(j) && secondCell.getCell(k) && (secondCell.getSumOfCandidates() == 3);
+                                secondNumOfCandEqual2 = ((secondCell.getCell(i) && secondCell.getCell(j)) || (secondCell.getCell(j) && secondCell.getCell(k)) || (secondCell.getCell(i) && secondCell.getCell(k))) && (secondCell.getSumOfCandidates() == 2);
                                 if((secondNumOfCandEqual3 || secondNumOfCandEqual2) && !secondCell.myEquals(firstCell)){
                                     for(Cell thirdCell:cells){
                                         boolean thirdNumOfCandEqual3,thirdNumOfCandEqual2;
-                                        thirdNumOfCandEqual3 = thirdCell.getCell(i) && thirdCell.getCell(j) && thirdCell.getCell(k) && (thirdCell.getNumOfCand() == 3);
-                                        thirdNumOfCandEqual2 = ((thirdCell.getCell(i) && thirdCell.getCell(j)) || (thirdCell.getCell(j) && thirdCell.getCell(k)) || (thirdCell.getCell(i) && thirdCell.getCell(k))) && (thirdCell.getNumOfCand() == 2);
+                                        thirdNumOfCandEqual3 = thirdCell.getCell(i) && thirdCell.getCell(j) && thirdCell.getCell(k) && (thirdCell.getSumOfCandidates() == 3);
+                                        thirdNumOfCandEqual2 = ((thirdCell.getCell(i) && thirdCell.getCell(j)) || (thirdCell.getCell(j) && thirdCell.getCell(k)) || (thirdCell.getCell(i) && thirdCell.getCell(k))) && (thirdCell.getSumOfCandidates() == 2);
                                         if((thirdNumOfCandEqual3 || thirdNumOfCandEqual2) && !thirdCell.myEquals(firstCell) && !thirdCell.myEquals(secondCell)){
                                             for(Cell otherCell:cells){
                                                 if((otherCell.myEquals(firstCell)) && (otherCell.myEquals(secondCell)) && (otherCell.myEquals(thirdCell))){
@@ -103,7 +103,7 @@ class Unit implements Iterable<Cell>, Cloneable{
                 }
             }
             if(count==1){
-                onlyCell.setConfNum(i);
+                onlyCell.setConfirmedNumber(i);
                 for(Cell cell:cells){
                     if(!cell.myEquals(onlyCell)){
                         cell.setCell(i,false);
