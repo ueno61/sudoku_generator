@@ -231,6 +231,7 @@ tr.cell:nth-of-type(3n){
 }
 
 div.difficulty{
+  
   display: flex;
    /* 並べる向き指定 */
    flex-direction: row;
@@ -238,6 +239,8 @@ div.difficulty{
    /* flex内で均等に並べる */
    justify-content: space-around; 
 }
+
+
 /* 難易度設定ボタン */
 button.difficulty {
   width: 120px;

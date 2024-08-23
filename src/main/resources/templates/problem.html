@@ -8,7 +8,7 @@
 <body>
     <div class="vbox">
         <h1>Suudoku Generator</h1>
-        <h3>Difficulty : --- </h3>
+        <h3>Difficulty : [[${diff}]]</h3>
     
         <table class="field"> 
             <th:block th:each="i : ${#numbers.sequence(0,8)}">
@@ -21,7 +21,7 @@
                             <table class="numtable"> 
                                 <tr>
                                     <td class="numcell">
-
+                                        [[${field[i][j]==0} ? '' :  ${field[i][j]}]]
                                     </td>
                                 </tr>
                             </table>
