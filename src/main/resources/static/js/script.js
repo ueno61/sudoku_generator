@@ -17,7 +17,6 @@ let clickedCellRow = null;
 //メモモードか否か
 let memoMode = false;
 
-
 //セルの表示を数字とメモで切り替える
 //参考: https://qiita.com/Gakusyu/items/0aa06abb12d3fb3d53a6
 
@@ -37,10 +36,21 @@ function changeToMemo(table, i, j) {
     memodiv.classList.add('active'); 
 }
 
+//セルがクリックされているかを判定
+function isCellClicked(){
+    return (clickedCellCol != null && clickedCellRow != null);
+}
+
 //memoする数字からmemotableの入力位置を返す
 // [1-9] --> [[0-2], [0-2]]
 function getPlaceInMemoTable(num){
     return [Math.floor((num - 1) / 3), (num - 1) % 3];
+}
+
+//通常モード時セルにnumを記述。numに''を指定することでclear機能も兼任
+function writeToNumCell(cell, num){
+    numcell = cell.children[0].children[0].rows[0].cells[0];
+    numcell.innerText = num;
 }
 
 //memotableにnumを記述
@@ -66,6 +76,11 @@ function clearMemoTable(cell){
     }
 }
 
+//セルの背景を変更
+function setCellBgColor(cell, color){
+    cell.style.backgroundColor = color;
+}
+
 //----↓ イベントハンドラ ↓----
 
 //カーソルをセルに置いたときに行列をハイライトする
@@ -74,22 +89,25 @@ function highlightLowColHandler() {
     const i = this.i;
     const j = this.j;
     
-    //TODO: newcolor はラムダ式で定義
+    const newColor = (i, j, center) => {
+        return (i == clickedCellCol && j == clickedCellRow) ? CLICKED_CELL_COLOR : 
+               (center) ? HIGHLIGHT_CELL_COLOR : HIGHLIGHT_LC_COLOR; 
+    }
 
     //行
     for(let k = 0; k < table.rows[i].cells.length; k++){
-        const newColor = (i == clickedCellCol && k == clickedCellRow) ? CLICKED_CELL_COLOR : HIGHLIGHT_LC_COLOR;
-        table.rows[i].cells[k].style.backgroundColor = newColor;
+        const cell = table.rows[i].cells[k];
+        setCellBgColor(cell, newColor(i, k, false));
     }
     //列
     for(let k = 0; k < table.rows.length; k++){
-        const newColor = (k == clickedCellCol && j == clickedCellRow) ? CLICKED_CELL_COLOR : HIGHLIGHT_LC_COLOR;
-        table.rows[k].cells[j].style.backgroundColor = newColor; 
+        const cell = table.rows[k].cells[j];
+        setCellBgColor(cell, newColor(k, j, false)); 
     }
 
     //ホバーしているセル
-    const newColor = (i == clickedCellCol && j == clickedCellRow) ? CLICKED_CELL_COLOR : HIGHLIGHT_CELL_COLOR;
-    table.rows[i].cells[j].style.backgroundColor = newColor;
+    const cell = table.rows[i].cells[j];
+    setCellBgColor(cell, newColor(i, j, true));
 }
 
 //カーソルがセルから離れたときにハイライトを戻す。
@@ -98,43 +116,52 @@ function cancelHighlightHandler(){
     const i = this.i;
     const j = this.j;
 
+    const newColor = (i, j) => {
+        return (i == clickedCellCol && j == clickedCellRow) ? CLICKED_CELL_COLOR : '';
+    }
+
     //クリックされてた場合は、その色に戻す
     //行
     for(let k = 0; k < table.rows[i].cells.length; k++){
-        const newColor = (i == clickedCellCol && k == clickedCellRow) ? CLICKED_CELL_COLOR : '';
-        table.rows[i].cells[k].style.backgroundColor = newColor;
+        const cell = table.rows[i].cells[k] 
+        setCellBgColor(cell, newColor(i, k));
     }
     //列
     for(let k = 0; k < table.rows.length; k++){
-        const newColor = (k == clickedCellCol && j == clickedCellRow) ? CLICKED_CELL_COLOR : '';
-        table.rows[k].cells[j].style.backgroundColor = newColor; 
+        const cell = table.rows[k].cells[j];
+        setCellBgColor(cell, newColor(k, j)); 
     }
 
     //ホバーしているセル
-    const newColor = (i == clickedCellCol && j == clickedCellRow) ? CLICKED_CELL_COLOR : '';
-    table.rows[i].cells[j].style.backgroundColor = newColor;
+    const cell = table.rows[i].cells[j] 
+    setCellBgColor(cell, newColor(i, j));
 
 }
 //セルをクリックしたときに色を変え、座標を記録
 function clickCellHandler(){
     const table = this.table;
-    const i = this.i;
-    const j = this.j;
+    const oldclickedCellCol = clickedCellCol;
+    const oldclickedCellRow = clickedCellRow;
+    clickedCellCol  = this.i;
+    clickedCellRow = this.j;
+    const clickedcell = table.rows[clickedCellCol].cells[clickedCellRow];
     
-    //すでにクリックされていた場合
-    if (i == clickedCellCol && j == clickedCellRow){
+    //すでにそのマスがクリックされていた場合
+    if (oldclickedCellCol == clickedCellCol && oldclickedCellRow == clickedCellRow){
         clickedCellCol = null;
         clickedCellRow = null;
-        table.rows[i].cells[j].style.backgroundColor = '';
+        setCellBgColor(clickedcell, '');
+        return;
     }
-    else {
-        if(clickedCellCol != null && clickedCellRow != null){
-            table.rows[clickedCellCol].cells[clickedCellRow].style.backgroundColor = "";  
-        }
-        clickedCellCol = i;
-        clickedCellRow = j;
-        table.rows[i].cells[j].style.backgroundColor = CLICKED_CELL_COLOR;  
+
+    //前にクリックされていたセルの色を戻す
+    if(oldclickedCellCol != null && oldclickedCellRow != null){
+        const oldclickedcell = table.rows[oldclickedCellCol].cells[oldclickedCellRow];
+        setCellBgColor(oldclickedcell, '');  
     }
+
+    //色を変える
+    setCellBgColor(clickedcell, CLICKED_CELL_COLOR);  
 }
 
 
@@ -144,7 +171,7 @@ function numButtonHandler(){
     const num = this.num;
 
     //クリックされてない場合何もしない
-    if(clickedCellCol == null || clickedCellRow == null) return;
+    if(!isCellClicked()) return;
 
     const cell = table.rows[clickedCellCol].cells[clickedCellRow];
 
@@ -159,8 +186,7 @@ function numButtonHandler(){
     }
     else {
         //通常モード
-        const numcell = cell.children[0].children[0];
-        numcell.rows[0].cells[0].innerText = num;
+        writeToNumCell(cell,num);
         changeToNum(table, clickedCellCol, clickedCellRow);   
     }
 
@@ -171,31 +197,32 @@ function delButtonHandler(){
     const table = this.table;
 
     //クリックされてない場合何もしない
-    if(clickedCellCol == null || clickedCellRow == null) return;
+    if(!isCellClicked) return;
 
     const cell = table.rows[clickedCellCol].cells[clickedCellRow];
 
     if(memoMode){
         //メモモード
         clearMemoTable(cell);
+        changeToNum(table, clickedCellCol, clickedCellRow);
     }
     else{
         //通常モード
-        let numcell = cell.children[0].children[0];
-        numcell.rows[0].cells[0].innerText = '';
+        writeToNumCell(cell, '');
         changeToMemo(table, clickedCellCol, clickedCellRow);
 
     }
 }
 
 //MEMOボタンが押された時、MEMOモードと通常モードを切り替える
-//未完成!!
 function memoButtonHandler(){
+    //ボタンの色の変更処理
     const memobutton = optionbuttons[0];
     newBgColor = (memoMode) ? '' : MEMO_MODE_BG_COLOR;
     newFontColor = (memoMode) ? '' : MEMO_MODE_CHAR_COLOR; 
     memobutton.style.backgroundColor = newBgColor;
     memobutton.style.color = newFontColor;
+
     memoMode = !memoMode;
 }
 
@@ -207,7 +234,6 @@ for(let i = 0; i < table.rows.length; i++){
     let cells = table.rows[i].cells;
     for(let j = 0; j < cells.length; j++){
         let cell = cells[j];
-
         //addEventlistenerのハンドラに引数を渡す
         cell.addEventListener('click', {table: table, i: i, j: j, handleEvent: clickCellHandler});
         cell.addEventListener('mouseleave', {table: table, i: i, j: j, handleEvent: cancelHighlightHandler});
@@ -219,7 +245,6 @@ for(let i = 0; i < table.rows.length; i++){
 for(let i = 0; i < 9; i++){
     numbuttons.item(i).addEventListener('click', {table: table, num: i+1, handleEvent: numButtonHandler});
 }
-
 //MEMOボタン
 optionbuttons.item(0).addEventListener('click', {handleEvent: memoButtonHandler});
 //DELETEボタン
