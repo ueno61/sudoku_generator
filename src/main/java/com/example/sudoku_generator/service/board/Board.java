@@ -127,19 +127,19 @@ public class Board implements Cloneable{
     public void setBoard(){
         for(Unit square:squares){
             for(Cell cell:square){
-                cell.setConfNum();
+                cell.setConfirmedNumber();
             }
             square.setConfNumUnit();
         }
         for(Unit row:rows){
             for(Cell cell:row){
-                cell.setConfNum();
+                cell.setConfirmedNumber();
             }
             row.setConfNumUnit();
         }
         for(Unit col:cols){
             for(Cell cell:col){
-                cell.setConfNum();
+                cell.setConfirmedNumber();
             }
             col.setConfNumUnit();
         }
