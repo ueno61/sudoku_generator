@@ -2,11 +2,20 @@
 const HIGHLIGHT_LC_COLOR = 'rgb(230, 230, 230)';
 const HIGHLIGHT_CELL_COLOR = 'rgb(180, 180, 180)';
 const CLICKED_CELL_COLOR = 'rgb(170, 230, 250)';
+const MEMO_MODE_BG_COLOR = 'rgb(60 60 60)';
+const MEMO_MODE_CHAR_COLOR = 'rgb(230, 230, 230)';
+
+//フィールドとボタンのエレメント
+const table = document.getElementsByClassName('field').item(0);
+const numbuttons = document.getElementsByClassName('numbutton');
+const optionbuttons = document.getElementsByClassName('optionbutton');
 
 //クリックされたセルの座標
 let clickedCellCol = null;
 let clickedCellRow = null;
 
+//メモモードか否か
+let memoMode = false;
 
 //カーソルをセルに置いたときに行列をハイライトする
 function highlightLowColHandler() {
@@ -14,6 +23,8 @@ function highlightLowColHandler() {
     const i = this.i;
     const j = this.j;
     
+    //TODO: newcolor はラムダ式で定義
+
     //行
     for(let k = 0; k < table.rows[i].cells.length; k++){
         const newColor = (i == clickedCellCol && k == clickedCellRow) ? CLICKED_CELL_COLOR : HIGHLIGHT_LC_COLOR;
@@ -116,26 +127,21 @@ function delButtonHandler(){
     }
 }
 
-//MEMOボタンが押された時の処理
+//MEMOボタンが押された時、MEMOモードと通常モードを切り替える
 //未完成!!
 function memoButtonHandler(){
-    const table = this.table;
-    if(clickedCellCol != null && clickedCellRow != null){
-        memotable = table.rows[clickedCellCol].cells[clickedCellRow].children[1].children[0];
-
-        for(let i = 0; i < 3; i++){
-            for(let j = 0; j < 3; j++){
-                memotable.rows[i].cells[j].innerText = i * 3 + j + 1;
-            }
-        }
-        changeToMemo(table, clickedCellCol, clickedCellRow);
-    }
+    const memobutton = optionbuttons[0];
+    newBgColor = (memoMode) ? '' : MEMO_MODE_BG_COLOR;
+    newFontColor = (memoMode) ? '' : MEMO_MODE_CHAR_COLOR; 
+    memobutton.style.backgroundColor = newBgColor;
+    memobutton.style.color = newFontColor;
+    memoMode = !memoMode;
 }
 
 
 //フィールドの各要素にイベントハンドラを設定
 //TODO: memo実装に伴い、fieldの構造が変化。それに対応
-const table = document.getElementsByClassName('field').item(0);
+
 for(let i = 0; i < table.rows.length; i++){
     let cells = table.rows[i].cells;
     for(let j = 0; j < cells.length; j++){
@@ -149,14 +155,11 @@ for(let i = 0; i < table.rows.length; i++){
 }
 
 //各操作用ボタンにイベントハンドラを設定
-const numbuttons = document.getElementsByClassName('numbutton');
 for(let i = 0; i < 9; i++){
     numbuttons.item(i).addEventListener('click', {table: table, num: i+1, handleEvent: numButtonHandler});
 }
 
-const optionbuttons = document.getElementsByClassName('optionbutton');
 //MEMOボタン
-
-optionbuttons.item(0).addEventListener('click', {table: table, handleEvent: memoButtonHandler});
+optionbuttons.item(0).addEventListener('click', {handleEvent: memoButtonHandler});
 //DELETEボタン
 optionbuttons.item(1).addEventListener('click', {table: table, handleEvent: delButtonHandler});
