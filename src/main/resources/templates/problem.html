@@ -15,17 +15,30 @@
                 <tr class="cell">
                     <!-- 一つのセルに対応 -->
                     <td class="cell" th:each="j : ${#numbers.sequence(0,8)}">
-
                         <!-- 実際の数字 -->
-                        <div class="num active">
-                            <table class="numtable"> 
-                                <tr>
-                                    <td class="numcell">
-                                        [[${field[i][j]==0} ? '' :  ${field[i][j]}]]
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                        <th:block th:if="${field[i][j]==0}">
+                            <div class="num active">
+                                <table class="numtable"> 
+                                    <tr>
+                                        <td class="numcell">
+                                            [[${field[i][j]==0} ? '' :  ${field[i][j]}]]
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </th:block>
+
+                        <th:block th:unless="${field[i][j]==0}">
+                            <div class="num active fixed">
+                                <table class="numtable"> 
+                                    <tr>
+                                        <td class="numcell">
+                                            [[${field[i][j]==0} ? '' :  ${field[i][j]}]]
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </th:block> 
 
                         <!-- メモ用テーブル -->
                         <div class="memo">

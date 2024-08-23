@@ -81,6 +81,11 @@ function setCellBgColor(cell, color){
     cell.style.backgroundColor = color;
 }
 
+//そのセルが問題によってすでに数字が埋められているかを判定
+function isFixedCell(cell){
+    return cell.children[0].classList.contains('fixed');
+}
+
 //----↓ イベントハンドラ ↓----
 
 //カーソルをセルに置いたときに行列をハイライトする
@@ -175,6 +180,9 @@ function numButtonHandler(){
 
     const cell = table.rows[clickedCellCol].cells[clickedCellRow];
 
+    //固定されている場合何もしない
+    if(isFixedCell(cell)) return;
+
     if(memoMode){
         //メモモード
         //普通の数字が書かれていた場合は消す仕様
@@ -200,6 +208,9 @@ function delButtonHandler(){
     if(!isCellClicked) return;
 
     const cell = table.rows[clickedCellCol].cells[clickedCellRow];
+
+    //固定されている場合何もしない
+    if(isFixedCell(cell)) return;
 
     if(memoMode){
         //メモモード
