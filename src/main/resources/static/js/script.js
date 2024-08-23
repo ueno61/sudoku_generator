@@ -17,6 +17,57 @@ let clickedCellRow = null;
 //メモモードか否か
 let memoMode = false;
 
+
+//セルの表示を数字とメモで切り替える
+//参考: https://qiita.com/Gakusyu/items/0aa06abb12d3fb3d53a6
+
+function changeToNum(table, i, j) {
+    let numdiv = table.rows[i].cells[j].children[0];
+    let memodiv = table.rows[i].cells[j].children[1]; 
+
+    numdiv.classList.add('active'); 
+    memodiv.classList.remove('active'); 
+}
+
+function changeToMemo(table, i, j) {
+    let numdiv = table.rows[i].cells[j].children[0];
+    let memodiv = table.rows[i].cells[j].children[1]; 
+
+    numdiv.classList.remove('active'); 
+    memodiv.classList.add('active'); 
+}
+
+//memoする数字からmemotableの入力位置を返す
+// [1-9] --> [[0-2], [0-2]]
+function getPlaceInMemoTable(num){
+    return [Math.floor((num - 1) / 3), (num - 1) % 3];
+}
+
+//memotableにnumを記述
+//numがすでに書かれている場合は消す。
+function writeToMemoTable(cell, num){
+    const place = getPlaceInMemoTable(num);
+    memocell = cell.children[1].children[0].rows[place[0]].cells[place[1]];
+    if(memocell.innerText == ''){
+        memocell.innerText = num;
+    }
+    else {
+        memocell.innerText = '';
+    }
+}
+
+//memotableを全消し
+function clearMemoTable(cell){
+    memotable = cell.children[1].children[0];
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
+            memotable.rows[i].cells[j].innerText = '';
+        }
+    }
+}
+
+//----↓ イベントハンドラ ↓----
+
 //カーソルをセルに置いたときに行列をハイライトする
 function highlightLowColHandler() {
     const table = this.table;
@@ -86,44 +137,54 @@ function clickCellHandler(){
     }
 }
 
-//セルの表示を数字とメモで切り替える
-//参考: https://qiita.com/Gakusyu/items/0aa06abb12d3fb3d53a6
-
-function changeToNum(table, i, j) {
-    let numdiv = table.rows[i].cells[j].children[0];
-    let memodiv = table.rows[i].cells[j].children[1]; 
-
-    numdiv.classList.add('active'); 
-    memodiv.classList.remove('active'); 
-}
-
-function changeToMemo(table, i, j) {
-    let numdiv = table.rows[i].cells[j].children[0];
-    let memodiv = table.rows[i].cells[j].children[1]; 
-
-    numdiv.classList.remove('active'); 
-    memodiv.classList.add('active'); 
-}
-
 
 //数字ボタンが押された時の処理
 function numButtonHandler(){
     const table = this.table;
     const num = this.num;
-    if(clickedCellCol != null && clickedCellRow != null){
-        let numcell = table.rows[clickedCellCol].cells[clickedCellRow].children[0].children[0];
-        numcell.rows[0].cells[0].innerText = num;
-        changeToNum(table, clickedCellCol, clickedCellRow);
+
+    //クリックされてない場合何もしない
+    if(clickedCellCol == null || clickedCellRow == null) return;
+
+    const cell = table.rows[clickedCellCol].cells[clickedCellRow];
+
+    if(memoMode){
+        //メモモード
+        //普通の数字が書かれていた場合は消す仕様
+        let numcell = cell.children[0].children[0];
+        numcell.rows[0].cells[0].innerText = ''; 
+
+        writeToMemoTable(cell, num);
+        changeToMemo(table, clickedCellCol, clickedCellRow);
     }
+    else {
+        //通常モード
+        const numcell = cell.children[0].children[0];
+        numcell.rows[0].cells[0].innerText = num;
+        changeToNum(table, clickedCellCol, clickedCellRow);   
+    }
+
 }
 
 //DELETEボタンが押された時の処理
 function delButtonHandler(){
     const table = this.table;
-    if(clickedCellCol != null && clickedCellRow != null){
-        let numcell = table.rows[clickedCellCol].cells[clickedCellRow].children[0].children[0];
+
+    //クリックされてない場合何もしない
+    if(clickedCellCol == null || clickedCellRow == null) return;
+
+    const cell = table.rows[clickedCellCol].cells[clickedCellRow];
+
+    if(memoMode){
+        //メモモード
+        clearMemoTable(cell);
+    }
+    else{
+        //通常モード
+        let numcell = cell.children[0].children[0];
         numcell.rows[0].cells[0].innerText = '';
         changeToMemo(table, clickedCellCol, clickedCellRow);
+
     }
 }
 
