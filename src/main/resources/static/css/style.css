@@ -1,4 +1,5 @@
 body {
+  position: relative;
   /* 幅、高さをレスポンシブ対応 */
   width: 100%;
   height: 100%;
@@ -109,6 +110,7 @@ tr.cell:nth-of-type(3n){
   border-bottom: solid 2px;
 }
 
+
 /* 全体的なレイアウト */
 
 /* 共通設定 flex:要素を縦か横に並べる */
@@ -123,6 +125,8 @@ tr.cell:nth-of-type(3n){
 
   /* 並べる向き指定 */
   flex-direction: column;
+
+  z-index: 0;
 }
 
 .hbox1 {
@@ -159,27 +163,21 @@ tr.cell:nth-of-type(3n){
 }
 
 /* ボタンの共通設定 */
-.numbutton, .optionbutton, .submitbutton{
+.numbutton, .optionbutton, .submitbutton, button.difficulty{
   background-color: rgb(220 220 220);
   color: rgb(90 90 90);
   font-size: 20px;
   font-weight: bold;
 
-  
-  /* 枠線の設定 */
-  /* border-style: solid;
-  border-color: rgb(200 200 200);
-  border-width: 2px; */
-
   /* 枠線を消す */
   border: none; 
 
-  /* クリックした際に枠線を消す */
+  /* クリックした際の枠線を消す */
   outline: none;
 }
 
 /* カーソルを置いたときのボタンの共通設定 */
-.numbutton:hover, .optionbutton:hover, .submitbutton:hover{
+.numbutton:hover, .optionbutton:hover, .submitbutton:hover, button.difficulty:hover{
   background-color: rgb(150 150 150);
   color: rgb(255 255 255);
   font-size: 20px;
@@ -193,7 +191,7 @@ tr.cell:nth-of-type(3n){
 }
 
 /* クリックした時のボタンの共通設定 */
-.numbutton:active, .optionbutton:active, .submitbutton:active{
+.numbutton:active, .optionbutton:active, .submitbutton:active, button.difficulty:active{
   background-color: rgb(100 100 100);
   color: rgb(255 255 255);
   font-size: 20px;
@@ -204,5 +202,45 @@ tr.cell:nth-of-type(3n){
 
   /* クリックした際に枠線を消す */
   outline: none;
+}
+
+/* タイトル画面 */
+.titlemenu {
+  background: rgba(196, 246, 255, 0.9);
+  width: 600px;
+  height: 250px;
+  position: absolute;
+
+  
+  /* 位置調整 */
+  top: 0;
+  right: 0;
+  bottom: 70px;
+  left: 0;
+  margin: auto;
+  padding: auto;
+  z-index: 1;
+
+  display: flex;
+
+  /* 並べる向き指定 */
+  flex-direction: column;
+
+  /* flex内で均等に並べる */
+  justify-content: space-evenly;
+}
+
+div.difficulty{
+  display: flex;
+   /* 並べる向き指定 */
+   flex-direction: row;
+
+   /* flex内で均等に並べる */
+   justify-content: space-around; 
+}
+/* 難易度設定ボタン */
+button.difficulty {
+  width: 120px;
+  height: 45px;
 }
 

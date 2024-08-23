@@ -228,7 +228,6 @@ function memoButtonHandler(){
 
 
 //フィールドの各要素にイベントハンドラを設定
-//TODO: memo実装に伴い、fieldの構造が変化。それに対応
 
 for(let i = 0; i < table.rows.length; i++){
     let cells = table.rows[i].cells;
