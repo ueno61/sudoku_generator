@@ -91,7 +91,8 @@ class Cell implements Cloneable {
     public Cell clone() {
         try {
             Cell clone = (Cell) super.clone();
-            clone.memo = this.memo.clone();
+            clone.memo = Arrays.copyOf(this.memo,10);
+            clone.confirmedNumber = this.confirmedNumber;
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();

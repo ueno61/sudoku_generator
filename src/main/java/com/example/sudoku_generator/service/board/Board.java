@@ -12,6 +12,46 @@ public class Board implements Cloneable {
         }
     }
 
+    public int getConfirmedNumber(int row, int col) {
+        return cells[row][col].getConfirmedNumber();
+    }
+
+    public void setNumber(int row, int col, int num) {
+        cells[row][col] = new Cell(num);
+    }
+
+    public void removeNumber(int row, int col) {
+        cells[row][col] = new Cell(0);
+    }
+
+    public Square getSquare(int startRow, int startCol) {
+        startRow = (startRow / 3) * 3;
+        startCol = (startCol / 3) * 3;
+        Cell[] squareCells = new Cell[9];
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                squareCells[row * 3 + col] = this.cells[startRow + row][startCol + col].clone();
+            }
+        }
+        return new Square(squareCells);
+    }
+
+    public Row getRow(int row) {
+        Cell[] rowCells = new Cell[9];
+        for (int col = 0; col < 9; col++) {
+            rowCells[col] = cells[row][col].clone();
+        }
+        return new Row(rowCells);
+    }
+
+    public Col getCol(int col) {
+        Cell[] colCells = new Cell[9];
+        for (int row = 0; row < 9; row++) {
+            colCells[row] = cells[row][col].clone();
+        }
+        return new Col(colCells);
+    }
+
     public boolean isAllCellFilled() {  // Boardの全てのセルでconfNumが0じゃないならtrueを返す
         boolean endFrag = true;
         for (int row = 0; row < 9; row++) {
@@ -32,6 +72,40 @@ public class Board implements Cloneable {
                 cells[row][col].finalizeConfirmedNumber();
             }
         }
+    }
+
+    public boolean isValid() {
+        for (int startRow = 0; startRow < 9; startRow += 3) {
+            for (int startCol = 0; startCol < 9; startCol += 3) {
+                if (!getSquare(startRow, startCol).isValid()) {
+                    return false;
+                }
+            }
+        }
+
+        for (int row = 0; row < 9; row++) {
+            if (!getRow(row).isValid()) {
+                return false;
+            }
+        }
+
+        for (int col = 0; col < 9; col++) {
+            if (!getCol(col).isValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void printBoard() {
+        System.out.println("---------");
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                System.out.print(cells[row][col].getConfirmedNumber());
+            }
+            System.out.println();
+        }
+        System.out.println("---------");
     }
 
     @Override

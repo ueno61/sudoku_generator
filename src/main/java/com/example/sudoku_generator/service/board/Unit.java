@@ -3,7 +3,7 @@ package com.example.sudoku_generator.service.board;
 import java.util.Iterator;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-class Unit implements Iterable<Cell>, Cloneable {
+public class Unit implements Iterable<Cell>, Cloneable {
     // 9つのcellを用意する
     protected Cell[] cells;
 
@@ -32,7 +32,7 @@ class Unit implements Iterable<Cell>, Cloneable {
         return cells[num];
     }
 
-    protected boolean unitFillEnd() { // cellsの全てのcellでconfNumが0でないならばtrueを返す
+    protected boolean isAllCellFilled() { // cellsの全てのcellでconfNumが0でないならばtrueを返す
         boolean endFrag = true;
         for (Cell cell : cells) {
             if (cell.getConfirmedNumber() == 0) {
@@ -41,6 +41,21 @@ class Unit implements Iterable<Cell>, Cloneable {
             }
         }
         return endFrag;
+    }
+
+    protected boolean isValid() {
+        int[] numberCounts = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+        for (Cell cell : cells) {
+            if (cell.getConfirmedNumber() != 0) {
+                numberCounts[cell.getConfirmedNumber() - 1]++;
+            }
+        }
+        for (int count : numberCounts) {
+            if (count > 1) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected void excludeConfFromCand() { // そのcellsのcellで入る可能性のない数をfalseにする
