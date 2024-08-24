@@ -14,6 +14,9 @@ public class Generator {
         this.difficult = difficult;
     }
 
+    public Board getBoard() {
+        return this.board;
+    }
     public void generateProblem() {
         generateCompletedBoard();
     }
