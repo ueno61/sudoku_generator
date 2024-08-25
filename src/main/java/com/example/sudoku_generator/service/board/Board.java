@@ -130,9 +130,12 @@ public class Board implements Cloneable {
     public Board clone() {
         try {
             Board clone = (Board) super.clone();
+            clone.cells = new Cell[9][9];
             for (int row = 0; row < 9; row++) {
                 for (int col = 0; col < 9; col++) {
-                    clone.cells[row][col] = this.cells[row][col].clone();
+                    clone.cells[row][col] = new Cell(0);
+                    clone.cells[row][col].setConfirmedNumber(this.cells[row][col].getConfirmedNumber());
+                    clone.cells[row][col].setMemo(this.cells[row][col].getMemo());
                 }
             }
             return clone;

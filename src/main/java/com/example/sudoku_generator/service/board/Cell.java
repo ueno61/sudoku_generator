@@ -24,17 +24,9 @@ class Cell implements Cloneable {
         confirmedNumber = num;
     }
 
-    protected void setCell(int num, boolean bool) {
-        memo[num] = bool;
-    }
-
     protected void reconCell(Cell other) {
         memo = other.memo;
         confirmedNumber = other.confirmedNumber;
-    }
-
-    protected boolean getCell(int num) {
-        return memo[num];
     }
 
     protected int getConfirmedNumber() {
@@ -71,6 +63,13 @@ class Cell implements Cloneable {
                 memo[memoNum] = false;
             }
         }
+    }
+
+    protected boolean[] getMemo() {
+        return memo;
+    }
+    protected void setMemo(boolean[] memo) {
+        this.memo = Arrays.copyOf(memo,10);
     }
 
     protected int getSumOfCandidates() {
