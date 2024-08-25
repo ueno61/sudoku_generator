@@ -53,7 +53,7 @@ public class Board implements Cloneable {
 
     public void applyRowToBoard(int row, Row rowUnit) {
         for (int col = 0; col < 9; col++) {
-            cells[row][col].clone().reconCell(rowUnit.getCell(col));
+            cells[row][col].reconCell(rowUnit.getCell(col));
         }
     }
 
@@ -67,7 +67,7 @@ public class Board implements Cloneable {
 
     public void applyColToBoard(int col, Col colUnit) {
         for (int row = 0; row < 9; row++) {
-            cells[row][col].clone().reconCell(colUnit.getCell(row));
+            cells[row][col].reconCell(colUnit.getCell(row));
         }
     }
     public boolean isAllCellFilled() {  // Boardの全てのセルでconfNumが0じゃないならtrueを返す
