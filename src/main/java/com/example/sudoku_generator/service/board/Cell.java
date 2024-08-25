@@ -24,24 +24,21 @@ class Cell implements Cloneable {
         confirmedNumber = num;
     }
 
-    protected void setCell(int num, boolean bool) {
-        memo[num] = bool;
-    }
-
     protected void reconCell(Cell other) {
         memo = other.memo;
         confirmedNumber = other.confirmedNumber;
-    }
-
-    protected boolean getCell(int num) {
-        return memo[num];
     }
 
     protected int getConfirmedNumber() {
         return confirmedNumber;
     }
 
-    protected void setConfirmedNumber() {
+    protected void removeCandidate(int num) {
+        memo[num] = false;
+    }
+
+    protected void finalizeConfirmedNumber() {
+        if (confirmedNumber != 0) return;
         int count = 0;
         int candidateNumber = 0;
         for (int memoNum = 1; memoNum <= 9; memoNum++) {
@@ -56,8 +53,6 @@ class Cell implements Cloneable {
             confirmedNumber = candidateNumber;
         } else if (count == 0) {
             System.err.println("No valid candidates found for the cell.");
-        } else {
-            confirmedNumber = 0;
         }
     }
 
@@ -70,6 +65,13 @@ class Cell implements Cloneable {
         }
     }
 
+    protected boolean[] getMemo() {
+        return memo;
+    }
+    protected void setMemo(boolean[] memo) {
+        this.memo = Arrays.copyOf(memo,10);
+    }
+
     protected int getSumOfCandidates() {
         int count = 0;
         for (int memoNum = 1; memoNum <= 9; memoNum++) {
@@ -80,12 +82,6 @@ class Cell implements Cloneable {
         return count;
     }
 
-    /*
-     * protected void printCell(){
-     * System.out.print(confirmedNumber+" ");
-     * }
-     */
-
     public boolean myEquals(Cell otherCell) {
         return Arrays.equals(this.memo, otherCell.memo) && (this.confirmedNumber == otherCell.confirmedNumber);
     }
@@ -94,7 +90,8 @@ class Cell implements Cloneable {
     public Cell clone() {
         try {
             Cell clone = (Cell) super.clone();
-            clone.memo = this.memo.clone();
+            clone.memo = Arrays.copyOf(this.memo,10);
+            clone.confirmedNumber = this.confirmedNumber;
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
