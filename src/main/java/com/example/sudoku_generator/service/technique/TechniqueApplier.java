@@ -3,9 +3,12 @@ package com.example.sudoku_generator.service.technique;
 import com.example.sudoku_generator.service.board.Board;
 
 abstract class TechniqueApplier {
-    final int difficult = 1; // テクニックの難易度
+    final int difficult; // テクニックの難易度
 
-    protected abstract void applyTechnique(Board board);
+    protected TechniqueApplier(int difficult) {
+        this.difficult = difficult;
+    }
+    protected abstract void applyTechnique(Board board); // boardの各セルのメモから数字を減らすだけの処理を行う
     protected int getDifficult() {
         return this.difficult;
     }

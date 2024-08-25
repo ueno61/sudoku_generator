@@ -36,12 +36,25 @@ public class Board implements Cloneable {
         return new Square(squareCells);
     }
 
+    public void applySquareToBoard(int startRow, int startCol, Square square) {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                this.cells[startRow + row][startCol + col].reconCell(square.getCell(row,col));
+            }
+        }
+    }
     public Row getRow(int row) {
         Cell[] rowCells = new Cell[9];
         for (int col = 0; col < 9; col++) {
             rowCells[col] = cells[row][col].clone();
         }
         return new Row(rowCells);
+    }
+
+    public void applyRowToBoard(int row, Row rowUnit) {
+        for (int col = 0; col < 9; col++) {
+            cells[row][col].clone().reconCell(rowUnit.getCell(col));
+        }
     }
 
     public Col getCol(int col) {
@@ -52,6 +65,11 @@ public class Board implements Cloneable {
         return new Col(colCells);
     }
 
+    public void applyColToBoard(int col, Col colUnit) {
+        for (int row = 0; row < 9; row++) {
+            cells[row][col].clone().reconCell(colUnit.getCell(row));
+        }
+    }
     public boolean isAllCellFilled() {  // Boardの全てのセルでconfNumが0じゃないならtrueを返す
         boolean endFrag = true;
         for (int row = 0; row < 9; row++) {

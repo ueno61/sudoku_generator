@@ -12,6 +12,7 @@ public class Generator {
     Board board;
 
     public Generator(int difficult) {
+        this.board = new Board();
         this.difficult = difficult;
     }
 
@@ -21,12 +22,11 @@ public class Generator {
 
     public void generateProblem() {
         generateCompletedBoard();
+        removeNumbers(20);
     }
 
     private void generateCompletedBoard() {
-        this.board = new Board();
         fillBoardRandomly(this.board);
-        removeNumbers(20);
     }
 
     private boolean fillBoardRandomly(Board board) {
