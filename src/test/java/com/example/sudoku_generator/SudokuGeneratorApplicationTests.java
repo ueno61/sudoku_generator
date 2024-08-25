@@ -1,6 +1,7 @@
 package com.example.sudoku_generator;
 
 import com.example.sudoku_generator.service.*;
+import com.example.sudoku_generator.service.board.Board;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -32,5 +33,16 @@ class SudokuGeneratorApplicationTests {
 		Generator generator = new Generator(1);
 		generator.generateProblem();
 		generator.printBoard();
+	}
+
+	@Test
+	void checkClone() {
+		Board board = new Board();
+		board.setNumber(3,3,3);
+		board.printBoard();
+		Board copy = board.clone();
+		copy.setNumber(1,1,1);
+		board.printBoard();
+		copy.printBoard();
 	}
 }

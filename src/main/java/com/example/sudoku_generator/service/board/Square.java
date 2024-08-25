@@ -1,6 +1,6 @@
 package com.example.sudoku_generator.service.board;
 
-class Square extends Unit {
+public class Square extends Unit {
     protected Square(int[] numbs) {
         super(numbs);
     }
@@ -9,15 +9,23 @@ class Square extends Unit {
         super(cells);
     }
 
-    protected Square() {
+    public Square() {
         super();
     }
 
-    protected void setCell(int row, int col, Cell cell) {
+    public void setCell(int row, int col, Cell cell) {
         cells[row * 3 + col].reconCell(cell);
     }
 
     protected Cell getCell(int row, int col) {
         return cells[row * 3 + col];
+    }
+
+    public void removeCandidateFromCell(int row, int col, int removedNumber) {
+        super.removeCandidateFromCell(row * 3 + col, removedNumber);
+    }
+
+    public int getConfirmedNumber(int row, int col) {
+        return super.getConfirmedNumber(row * 3 + col);
     }
 }

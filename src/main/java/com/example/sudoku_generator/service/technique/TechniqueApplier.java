@@ -1,6 +1,6 @@
 package com.example.sudoku_generator.service.technique;
 
-import com.example.sudoku_generator.service.board.Board;
+import com.example.sudoku_generator.service.board.*;
 
 abstract class TechniqueApplier {
     final int difficult; // テクニックの難易度

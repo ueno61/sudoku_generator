@@ -1,15 +1,15 @@
 package com.example.sudoku_generator.service.board;
 
-class Row extends Unit {
-    protected Row(int[] numbs) {
+public class Row extends Unit {
+    public Row(int[] numbs) {
         super(numbs);
     }
 
-    protected Row(Cell[] cells) {
+    public Row(Cell[] cells) {
         super(cells);
     }
 
-    protected Row() {
+    public Row() {
         super();
     }
 }

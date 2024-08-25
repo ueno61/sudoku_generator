@@ -7,21 +7,21 @@ public class Unit implements Iterable<Cell>, Cloneable {
     // 9つのcellを用意する
     protected Cell[] cells;
 
-    protected Unit(int[] numbs) {
+    public Unit(int[] numbs) {
         cells = new Cell[9];
         for (int i = 0; i < 9; i++) {
             cells[i] = new Cell(numbs[i]);
         }
     }
 
-    protected Unit(Cell[] cells) {
+    public Unit(Cell[] cells) {
         this.cells = new Cell[9];
         for (int i = 0; i < 9; i++) {
             this.cells[i] = cells[i].clone();
         }
     }
 
-    protected Unit() {
+    public Unit() {
         this.cells = new Cell[9];
         for (int i = 0; i < 9; i++) {
             this.cells[i] = new Cell(0);
@@ -30,6 +30,14 @@ public class Unit implements Iterable<Cell>, Cloneable {
 
     protected Cell getCell(int num) {
         return cells[num];
+    }
+
+    public void removeCandidateFromCell(int num, int removedNumber) {
+        cells[num].removeCandidate(removedNumber);
+    }
+
+    public int getConfirmedNumber(int num) {
+        return cells[num].getConfirmedNumber();
     }
 
     protected boolean isValid() {
