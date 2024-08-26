@@ -89,7 +89,7 @@ td.memocell {
   height: 14px;
   font-size: 10px;
   font-weight: bold;
-  color: rgb(100 100 100);
+  color: rgb(87 140 255);
 }
 /* num のセル */
 td.numcell {
@@ -99,6 +99,14 @@ td.numcell {
   vertical-align: center;
 
   font-size: 24px;
+  color: rgb(53 96 189);
+  font-weight: bold;
+}
+
+/* 元々入力されている数字 */
+td.numcell.fixed {
+  color: rgb(0 0 0);
+  font-weight: normal;
 }
 
 
