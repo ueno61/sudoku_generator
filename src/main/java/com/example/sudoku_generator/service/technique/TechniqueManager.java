@@ -14,6 +14,9 @@ public class TechniqueManager {
 
         // テクニックを追加実装するたびに追加
         techniqueAppliers.add(new TechniqueApplier1());
+        techniqueAppliers.add(new TechniqueApplier2());
+
+
         this.difficult = difficult;
     }
 

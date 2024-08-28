@@ -28,4 +28,8 @@ public class Square extends Unit {
     public int getConfirmedNumber(int row, int col) {
         return super.getConfirmedNumber(row * 3 + col);
     }
+
+    public boolean isCandidate(int row, int col, int memoNum) {
+        return super.isCandidate(row * 3 + col, memoNum);
+    }
 }

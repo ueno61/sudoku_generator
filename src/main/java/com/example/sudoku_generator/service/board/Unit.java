@@ -40,6 +40,10 @@ public class Unit implements Iterable<Cell>, Cloneable {
         return cells[num].getConfirmedNumber();
     }
 
+    public boolean isCandidate(int num, int memoNum) {
+        return cells[num].isCandidate(memoNum);
+    }
+
     protected boolean isValid() {
         int[] numberCounts = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
         for (Cell cell : cells) {

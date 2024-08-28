@@ -72,6 +72,10 @@ class Cell implements Cloneable {
         this.memo = Arrays.copyOf(memo,10);
     }
 
+    protected boolean isCandidate(int memoNum) {
+        return memo[memoNum];
+    }
+
     protected int getSumOfCandidates() {
         int count = 0;
         for (int memoNum = 1; memoNum <= 9; memoNum++) {
