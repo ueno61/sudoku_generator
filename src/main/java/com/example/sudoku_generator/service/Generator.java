@@ -22,7 +22,13 @@ public class Generator {
 
     public void generateProblem() {
         generateCompletedBoard();
-        removeNumbers(20);
+        if (difficult == 1) {
+            removeNumbers(20);
+        } else if (difficult <= 3) {
+            removeNumbers(40);
+        } else {
+            removeNumbers(81);
+        }
     }
 
     private void generateCompletedBoard() {
@@ -73,6 +79,7 @@ public class Generator {
         }
         return true;
     }
+
     private void removeNumbers(int holeNum) {
         List<Integer> list81 = generateRandomNumbers(0, 80);
         int removed = 0;
@@ -83,16 +90,16 @@ public class Generator {
             board.removeNumber(row, col);
 
             // 穴を開けた盤面に二パターンの穴の埋め方を行い、そのにパターンで結果が一致したら解は一つだとする
-            Board board1,board2;
+            Board board1, board2;
             board1 = board.clone(); // 空いているマスにバックトラックで{1,2,...,9}の順で入れていく盤面
             board2 = board.clone(); // 空いているマスにバックトラックで{9,8,...,1}の順で入れていく盤面
-            int[] ascendingOrder = new int[]{1,2,3,4,5,6,7,8,9};
-            int[] descendingOrder = new int[]{9,8,7,6,5,4,3,2,1};
+            int[] ascendingOrder = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+            int[] descendingOrder = new int[]{9, 8, 7, 6, 5, 4, 3, 2, 1};
             fillBoardInOrder(board1, ascendingOrder);
             fillBoardInOrder(board2, descendingOrder);
             boolean isUniqueSolution = board1.myEquals(board2);
 
-            if (isSolvableByTechniques()&&isUniqueSolution) {
+            if (isSolvableByTechniques() && isUniqueSolution) {
                 removed++;
             } else {
                 board.setNumber(row, col, targetNumber);
@@ -105,8 +112,7 @@ public class Generator {
     private boolean isSolvableByTechniques() {
         Board copyBoard = board.clone();
         Solver solver = new Solver(difficult);
-        solver.solve(copyBoard);
-        return copyBoard.isAllCellFilled();
+        return solver.solve(copyBoard).isAllCellFilled();
     }
 
     private List<Integer> generateRandomNumbers(int start, int end) {

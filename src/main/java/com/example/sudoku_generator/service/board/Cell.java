@@ -68,22 +68,13 @@ class Cell implements Cloneable {
     protected boolean[] getMemo() {
         return memo;
     }
+
     protected void setMemo(boolean[] memo) {
         this.memo = Arrays.copyOf(memo,10);
     }
 
     protected boolean isCandidate(int memoNum) {
         return memo[memoNum];
-    }
-
-    protected int getSumOfCandidates() {
-        int count = 0;
-        for (int memoNum = 1; memoNum <= 9; memoNum++) {
-            if (memo[memoNum]) {
-                count++;
-            }
-        }
-        return count;
     }
 
     public boolean myEquals(Cell otherCell) {

@@ -36,6 +36,25 @@ public class Unit implements Iterable<Cell>, Cloneable {
         cells[num].removeCandidate(removedNumber);
     }
 
+    /**
+     * 各数字について、ユニット内で一箇所しか入る場所がなければそこのセルはその数字で確定させる
+     */
+    public void confirmOnlyOneCellInUnit() {
+        for (int num = 1; num <= 9; num++) {
+            int count = 0;
+            int confirmedId = 0;
+            for (int id = 0; id < 9; id++) {
+                if (cells[id].isCandidate(num)) {
+                    count++;
+                    confirmedId = id;
+                }
+            }
+            if (count == 1) {
+                cells[confirmedId].setConfirmedNumber(num);
+            }
+        }
+    }
+
     public int getConfirmedNumber(int num) {
         return cells[num].getConfirmedNumber();
     }

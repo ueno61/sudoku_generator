@@ -2,6 +2,9 @@ package com.example.sudoku_generator.service.technique;
 
 import com.example.sudoku_generator.service.board.*;
 
+/**
+ * テクニック１の仕様変更で不必要になったかも
+ */
 public class TechniqueApplier2 extends TechniqueApplier {
     // 各正方形、たて、よこに対して、そのユニット内で一つのセルの候補にしか残っていない数字があった場合に、
     // そのセルの候補から他の数字を外す(そのセルに入る数字を確定させる)
@@ -11,7 +14,7 @@ public class TechniqueApplier2 extends TechniqueApplier {
     }
 
     @Override
-    protected void applyTechnique(Board board) {
+    protected Board applyTechnique(Board board) {
 
         // 各正方形に対して適用
         for (int startRow = 0; startRow < 9; startRow += 3) {
@@ -35,6 +38,8 @@ public class TechniqueApplier2 extends TechniqueApplier {
             determineSingleCandidateInCol(col);
             board.applyColToBoard(colNum, col);
         }
+
+        return board;
     }
 
     private void determineSingleCandidateInSquare(Square square) {

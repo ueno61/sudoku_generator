@@ -16,10 +16,21 @@ public class Board implements Cloneable {
         return cells[row][col].getConfirmedNumber();
     }
 
+    /**
+     * 問題作成時に数字の入ったセルを作成する関数
+     * @param row　対象セルの行
+     * @param col　対象セルの列
+     * @param num　対象セルに入れる数字
+     */
     public void setNumber(int row, int col, int num) {
         cells[row][col] = new Cell(num);
     }
 
+    /**
+     * 問題生成時にセルを空にする関数
+     * @param row　対象セルの行
+     * @param col　対象セルの列
+     */
     public void removeNumber(int row, int col) {
         cells[row][col] = new Cell(0);
     }
@@ -39,10 +50,11 @@ public class Board implements Cloneable {
     public void applySquareToBoard(int startRow, int startCol, Square square) {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                this.cells[startRow + row][startCol + col].reconCell(square.getCell(row,col));
+                this.cells[startRow + row][startCol + col].reconCell(square.getCell(row, col));
             }
         }
     }
+
     public Row getRow(int row) {
         Cell[] rowCells = new Cell[9];
         for (int col = 0; col < 9; col++) {
@@ -70,6 +82,7 @@ public class Board implements Cloneable {
             cells[row][col].reconCell(colUnit.getCell(row));
         }
     }
+
     public boolean isAllCellFilled() {  // Boardの全てのセルでconfNumが0じゃないならtrueを返す
         boolean endFrag = true;
         for (int row = 0; row < 9; row++) {
@@ -90,6 +103,21 @@ public class Board implements Cloneable {
                 cells[row][col].finalizeConfirmedNumber();
             }
         }
+    }
+
+    public boolean[] getCellMemo(int row, int col) {
+        // セルに入る可能性のある数字の配列を返す
+        return cells[row][col].getMemo();
+    }
+
+    /**
+     * セルに入る数字の候補から引数numを除く関数
+     * @param row　対象セルの行
+     * @param col　対象セルの列
+     * @param num　セルから除く数
+     */
+    public void removeCandidate(int row,int col,int num) {
+        cells[row][col].removeCandidate(num);
     }
 
     public boolean isValid() {
