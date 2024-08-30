@@ -19,18 +19,26 @@ public class SudokuController {
     @GetMapping("/problem")
     public String getProblem(Model model, @RequestParam String diff) {
 
-        Generator generator = new Generator(1);
+        int diffInt;
+        if (diff.equals("easy")) {
+            diffInt = 1;
+        } else if (diff.equals("normal")) {
+            diffInt = 3;
+        } else {
+            diffInt = 5;
+        }
+        Generator generator = new Generator(diffInt);
         generator.generateProblem();//ここで生成したfieldを取得
-        int[][] sampleProblem = new int[9][9];
+        int[][] problem = new int[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                sampleProblem[i][j] = generator.getBoard().getConfirmedNumber(i, j);
+                problem[i][j] = generator.getBoard().getConfirmedNumber(i, j);
             }
         }
 
         //難易度の文字列と問題を渡す
         model.addAttribute("diff", diff);
-        model.addAttribute("field", sampleProblem);
+        model.addAttribute("field", problem);
         return "problem";
     }
 }
