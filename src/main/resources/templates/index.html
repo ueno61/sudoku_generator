@@ -1,12 +1,12 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
-    <title>Suudoku Generator</title>
+    <title>Sudoku Generator</title>
     <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
 	<div class="vbox">
-		<h1>Suudoku Generator</h1>
+		<h1>Sudoku Generator</h1>
 		<h3>Difficulty : --- </h3>
 		<table class="field"> 
 			<th:block th:each="i : ${#numbers.sequence(0,8)}">
@@ -57,7 +57,7 @@
 			<button type="button" onclick="location.href='/problem?diff=hard'   " class="difficulty">HARD</button>	
 		</div>
 		<div class="difficulty">
-			<button type="button" value="difficult" class="difficulty">TECHNICS</button>	
+			<button type="button" value="difficult" class="difficulty">TECHNIQUES</button>
 		</div>
 	</div>
 </body>
